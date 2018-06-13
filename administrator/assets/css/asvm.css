@@ -1,0 +1,17 @@
+.icon-48-orders {
+      background-image: url(../images/l_orders.png);
+      padding-left:60px!important;
+}
+
+.icon-48-order {
+      background-image: url(../images/l_orders.png);
+      padding-left:60px!important;
+}
+
+
+
+.other-filters{
+    padding: 0 14px;
+}
+
+#j-sidebar-container{min-height:230px!important;}
