@@ -174,9 +174,18 @@ class AsvmModelExports extends JModelList
 	
 	public function getOrder($orderid){
 		$db = JFactory::getDbo();
-		$sub = "concat((SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = order_currency),' ',";
-		$sql = "SELECT virtuemart_order_id as order_id,`order_number`,`created_on` as order_date,order_subtotal as order_subtotal,`coupon_code` as coupon,order_discount as discount, (SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = order_status) as order_status,order_total,order_billTaxAmount as total_tax,(SELECT  `payment_element` FROM  `#__virtuemart_paymentmethods` = virtuemart_paymentmethod_id) as payment_method,(SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` WHERE `virtuemart_shipmentmethod_id` = virtuemart_shipmentmethod_id) as ship_method,order_pass as secret_key,(SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = order_currency) as currency_code_3,(SELECT `currency_symbol` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = order_currency) as currency_symbol   FROM `#__virtuemart_orders` WHERE `virtuemart_order_id` = ".$db->quote($orderid);
-		$db->setQuery($sql);
+		//$sub = "concat((SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` =order_currency),' ',";
+		
+		$query = $db->getQuery(true);
+		$query->select('o.virtuemart_order_id as order_id,o.order_number,o.created_on as order_date,o.order_subtotal as order_subtotal,o.coupon_code as coupon,o.order_discount as discount,o.order_total,o.order_billTaxAmount as total_tax,o.order_pass as secret_key,s.order_status_name,pm.payment_element as payment_method,sm.shipment_element as ship_method,cc.currency_code_3 as currency_code_3,cs.currency_symbol as currency_symbol');
+		$query->from($db->quoteName('#__virtuemart_orders', 'o'));
+		$query->join('LEFT', $db->quoteName('#__virtuemart_orderstates', 's') . ' ON (' . $db->quoteName('o.order_status') . ' = ' . $db->quoteName('s.order_status_code') . ')');
+		$query->join('LEFT', $db->quoteName('#__virtuemart_paymentmethods', 'pm') . ' ON (' . $db->quoteName('o.virtuemart_paymentmethod_id') . ' = ' . $db->quoteName('pm.virtuemart_paymentmethod_id') . ')');
+		$query->join('LEFT', $db->quoteName('#__virtuemart_shipmentmethods', 'sm') . ' ON (' . $db->quoteName('o.virtuemart_shipmentmethod_id') . ' = ' . $db->quoteName('sm.virtuemart_shipmentmethod_id') . ')');
+		$query->join('LEFT', $db->quoteName('#__virtuemart_currencies', 'cc') . ' ON (' . $db->quoteName('o.payment_currency_id') . ' = ' . $db->quoteName('cc.virtuemart_currency_id') . ')');
+		$query->join('LEFT', $db->quoteName('#__virtuemart_currencies', 'cs') . ' ON (' . $db->quoteName('o.payment_currency_id') . ' = ' . $db->quoteName('cs.virtuemart_currency_id') . ')');
+		$query->where($db->quoteName('o.virtuemart_order_id') . ' = '.$orderid);
+		$db->setQuery($query);
 		$results = $db->loadAssoc();		
 		return $results;
 	}

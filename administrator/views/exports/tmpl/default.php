@@ -8,6 +8,7 @@
  */
 defined('_JEXEC') or die;
 use Joomla\Registry\Registry;
+JHtml::_('jquery.framework');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
@@ -18,7 +19,7 @@ $language->load('com_virtuemart', JPATH_ADMINISTRATOR, 'en-GB', true);
 $language->load('com_virtuemart', JPATH_ADMINISTRATOR.'/components/com_virtuemart', 'en-GB', true);
 $document = JFactory::getDocument();
 $document->addStyleSheet('components/com_asvm/assets/css/asvm.css');
-$document->addScript('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js');
+$document->addScript('components/com_asvm/assets/js/jquery-ui.min.js');
 $exportkey = $this->exportkey;
 $activetab = "searchbyorder";
 $selected = $this->data['selected'];

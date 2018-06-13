@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.0" method="upgrade">
     <name>com_asvm</name>
-    <creationDate>January, 2018</creationDate>
+    <creationDate>June, 2018</creationDate>
     <copyright>Copyright (C) 2015. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>JoomDev</author>
     <authorEmail>info@joomdev.com</authorEmail>
     <authorUrl>http://www.joomdev.com/</authorUrl>
-    <version>1.3</version>
+    <version>1.4</version>
     <description><![CDATA[<div style="font-size:16px; font-weight:bold; color:black; text-align:left; margin:0px; padding:5px;">Advanced Search Manager for VirtueMart installed successfully.</div><div style="font-weight:normal; border-bottom:1px solid #f0dc7e; border-top:1px solid #f0dc7e; display:block; padding:5px; margin:5px; background-color:#fff;">
 <img src="components/com_asvm/assets/images/vmloga4.png" style="float:right;margin:0px 15px;"/>
 <p style="color:black; font-size:13px; text-align:left; margin:0px; padding:5px;">Advanced Order Manager for Virtuemart lets your manage your Virutemart Orders easily. You can Search and Export your orders by the following options:</p>
