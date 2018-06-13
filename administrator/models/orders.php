@@ -16,6 +16,12 @@ jimport('joomla.application.component.modellist');
  *
  * @since  1.6
  */
+if (!class_exists('VmConfig'))
+{
+	require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
+	VmConfig::loadConfig();
+}
+
 class AsvmModelOrders extends JModelList
 {
 	/**
@@ -75,8 +81,9 @@ class AsvmModelOrders extends JModelList
 		->join('LEFT', $db->quoteName('#__virtuemart_orderstates') . ' AS vos ON vos.order_status_code = a.order_status');
 
 		// Join over the virtuemart paymentmethods .
+		
 		$query->select('vpeg.payment_name AS payment_method')
-			->join('LEFT', '#__virtuemart_paymentmethods_en_gb AS vpeg ON vpeg.virtuemart_paymentmethod_id=a.virtuemart_paymentmethod_id');
+			->join('LEFT', '#__virtuemart_paymentmethods_'.VmConfig::$vmlang.' AS vpeg ON vpeg.virtuemart_paymentmethod_id=a.virtuemart_paymentmethod_id');
 		
 		// Join over the virtuemart  order  userinfos.
 		$query->select("CONCAT(vou.first_name, ' ', vou.last_name) as name , vou.email")
@@ -289,8 +296,7 @@ class AsvmModelOrders extends JModelList
 		} 
 		
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'a.virtuemart_order_id');
-		
+		$orderCol = $this->state->get('list.ordering', 'a.virtuemart_order_id');		
 		$orderDirn = $this->state->get('list.direction', 'DESC');
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));		
 		$query->group('vou.virtuemart_order_id');		

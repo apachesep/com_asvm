@@ -7,6 +7,12 @@
  * @author      JoomDev <info@joomdev.com> - http://www.joomdev.com/
  */
  
+if (!class_exists('VmConfig'))
+{
+	require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
+	VmConfig::loadConfig();
+}
+ 
 defined('_JEXEC') or die;
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
@@ -91,7 +97,7 @@ echo $displayCurrency->currency_symbol;
 									
 									case 'produt_name' : 
 										$pid = implode(',',$v);
-										$db->setQuery("SELECT product_name FROM #__virtuemart_products_en_gb WHERE virtuemart_product_id IN($pid)");
+										$db->setQuery("SELECT product_name FROM #__virtuemart_products_".VmConfig::$vmlang." WHERE virtuemart_product_id IN($pid)");
 										$resut = $db->loadObjectList();
 										$multiselectvalue = '';
 										if(!empty($resut)){
@@ -125,7 +131,7 @@ echo $displayCurrency->currency_symbol;
 									
 									case 'payment_method' : 
 										$pmtid = implode(',',$v);
-										$db->setQuery("SELECT payment_name FROM #__virtuemart_paymentmethods_en_gb WHERE virtuemart_paymentmethod_id IN($pmtid)");
+										$db->setQuery("SELECT payment_name FROM #__virtuemart_paymentmethods_".VmConfig::$vmlang." WHERE virtuemart_paymentmethod_id IN($pmtid)");
 										$resut = $db->loadObjectList();
 										$multiselectvalue = '';
 										if(!empty($resut)){

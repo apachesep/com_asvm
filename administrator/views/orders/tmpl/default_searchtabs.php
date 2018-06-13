@@ -21,7 +21,11 @@ $searchButton = $data['options']->get('searchButton', true);
 $filterFields = $_REQUEST;
 $form = JForm::getInstance('form', JPATH_ROOT.'/administrator/components/com_asvm/models/forms/filter_orders.xml');
 JHtml::_('behavior.tooltip');
-$activetab = (isset($_REQUEST['active_tab']) && !empty($_REQUEST['active_tab'])) ? $_REQUEST['active_tab'] : "searchbyorder";
+
+$jinput = JFactory::getApplication()->input;
+$activetab = ($jinput->get('active_tab') != '') ? $jinput->get('active_tab') : 'searchbyorder';
+$resultdata = $this->items; 
+
 ?>
  <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $activetab)); ?>
 	<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'searchbyorder', JText::_('COM_ASVM_ORDER_SEARCH_BY_ORDER', true)); ?>				
@@ -185,7 +189,12 @@ $activetab = (isset($_REQUEST['active_tab']) && !empty($_REQUEST['active_tab']))
 <div class="clearfix"></div><div class="clearfix"></div>
 <br>
 <button  type="submit" class="btn btn-info" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><span class="icon-search"></span><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+<?php if($jinput->get('order_selection')){ ?>
+<a id="toolbar-reset" href="javascript:void(0);" class="btn btn-info clearbtnnew" title="<?php echo JText::_('COM_ASVM_RESET_BUTTON'); ?>"><span class="icon-loop"></span><?php echo JText::_('COM_ASVM_RESET_BUTTON'); ?></a>
+<?php } ?>
+<?php if(isset($resultdata) && count($resultdata) > 0){ ?>
 <button id="toolbar-download" type="button" class="btn btn-warning" title="<?php echo JText::_('COM_ASVM_EXPORT_BUTTON'); ?>"><span class="icon-download"></span><?php echo JText::_('COM_ASVM_EXPORT_BUTTON'); ?></button>
+<?php } ?>
 <hr>
 <script>
 	jQuery(function(){

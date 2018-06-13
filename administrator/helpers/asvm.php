@@ -12,6 +12,12 @@ defined('_JEXEC') or die;
 /**
  * Asvm helper.
  */
+ if (!class_exists('VmConfig'))
+{
+	require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
+	VmConfig::loadConfig();
+}
+
 class AsvmHelper {
 
     /**
@@ -95,7 +101,7 @@ class AsvmHelper {
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('virtuemart_product_id As value, product_name As text')
-			->from('#__virtuemart_products_en_gb AS a')			
+			->from('#__virtuemart_products_'.VmConfig::$vmlang.' AS a')			
 			->order('a.product_name');
 		// Get the options.
 		$db->setQuery($query);
@@ -163,7 +169,7 @@ class AsvmHelper {
 		$query = $db->getQuery(true)
 			->select('a.virtuemart_paymentmethod_id As value, b.payment_name As text')
 			->from('#__virtuemart_paymentmethods AS a')
-			->join('left', $db->quoteName('#__virtuemart_paymentmethods_en_gb', 'b') . ' ON (' . $db->quoteName('a.virtuemart_paymentmethod_id') . ' = ' . $db->quoteName('b.virtuemart_paymentmethod_id') . ')')
+			->join('left', $db->quoteName('#__virtuemart_paymentmethods_'.VmConfig::$vmlang, 'b') . ' ON (' . $db->quoteName('a.virtuemart_paymentmethod_id') . ' = ' . $db->quoteName('b.virtuemart_paymentmethod_id') . ')')
 			->where('a.published = 1')
 			->order('a.payment_element');
 
