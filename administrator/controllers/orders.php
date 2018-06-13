@@ -236,7 +236,7 @@ class AsvmControllerOrders extends JControllerAdmin
 			</div>
 		<?php }
 		else{
-			$downfilename = JURI::root().'media/com_asvm/files/'.$filename;
+			$downfilename = JPATH_ROOT.'/media/com_asvm/files/'.$filename;
 			header('Content-Disposition: attachment; filename="'.basename($downfilename).'"');
 			header('Content-Length: ' . filesize($downfilename));
 			readfile($downfilename);
