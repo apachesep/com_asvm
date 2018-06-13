@@ -1,8 +1,8 @@
 <?php
 /**
- * @version     1.0.0
- * @package     com_asvm
- * @copyright   Copyright (C) 2015. All rights reserved.
+ * @version     1.1
+ * @package     Advanced Search Manager for Virtuemart
+ * @copyright   Copyright (C) 2016 JoomDev. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      JoomDev <info@joomdev.com> - http://www.joomdev.com/
  */
@@ -22,6 +22,11 @@ class AsvmHelper {
 			JText::_('COM_ASVM_TITLE_ORDERS'),
 			'index.php?option=com_asvm&view=orders',
 			$vName == 'orders'
+		);
+		JHtmlSidebar::addEntry(
+			JText::_('Export'),
+			'index.php?option=com_asvm&view=exports',
+			$vName == 'exports'
 		);		
     }
 

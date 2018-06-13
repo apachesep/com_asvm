@@ -10,31 +10,23 @@
 // no direct access
 defined('_JEXEC') or die;
 
-class AsvmViewOrders extends JViewLegacy
+class AsvmViewExports extends JViewLegacy
 {
 	
 	protected $items;
 	protected $pagination;
 	protected $state;
-
-	/**
-	 * Method to display the view.
-	 *
-	 * @param   string  $tpl  A template file to load. [optional]
-	 *
-	 * @return  mixed  A string if successful, otherwise a JError object.
-	 *
-	 * @since   1.6
-	 */
+	public $exportkey,$data;
 	public function display($tpl = null)
 	{
 		
-		$this->items         = $this->get('Items');
+		/* $this->items         = $this->get('Items');
 		$this->pagination    = $this->get('Pagination');
 		$this->state         = $this->get('State');
 		$this->filterForm    = $this->get('FilterForm');
-		$this->activeFilters = $this->get('ActiveFilters');
-
+		$this->activeFilters = $this->get('ActiveFilters'); */
+		$this->exportkey = $this->get('DefaultExportkey');
+		$this->data = $this->get('Data');
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -43,7 +35,7 @@ class AsvmViewOrders extends JViewLegacy
 			return false;
 		}
 	
-		AsvmHelper::addSubmenu('orders');
+		AsvmHelper::addSubmenu('exports');
 		$this->addToolbar();		
 
 		$this->sidebar = JHtmlSidebar::render();
@@ -76,4 +68,5 @@ class AsvmViewOrders extends JViewLegacy
 	{
 		return array();
 	}
+	
 }

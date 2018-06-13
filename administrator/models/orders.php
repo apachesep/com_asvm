@@ -1,9 +1,8 @@
 <?php
-
 /**
- * @version     1.0.0
- * @package     com_asvm
- * @copyright   Copyright (C) 2015. All rights reserved.
+ * @version     1.1
+ * @package     Advanced Search Manager for Virtuemart
+ * @copyright   Copyright (C) 2016 JoomDev. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      JoomDev <info@joomdev.com> - http://www.joomdev.com/
  */
@@ -11,6 +10,7 @@
 
 defined('_JEXEC') or die;
 jimport('joomla.application.component.modellist');
+
 /**
  * Methods supporting a list of order records.
  *
@@ -56,7 +56,7 @@ class AsvmModelOrders extends JModelList
 	 *
 	 * @since   1.6
 	 */
-	protected function getListQuery()
+	public function getListQuery()
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -294,6 +294,8 @@ class AsvmModelOrders extends JModelList
 		$orderDirn = $this->state->get('list.direction', 'DESC');
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));		
 		$query->group('vou.virtuemart_order_id');		
+		$session = JFactory::getSession();
+		$session->set('orderquery',$query);
 		return $query;
 	}
 
@@ -400,4 +402,49 @@ class AsvmModelOrders extends JModelList
         
         return $items;
     }
+	public function billTO($orderid){
+		$db = JFactory::getDbo();
+		$sql = "SELECT `first_name` as bill_to_fname,`last_name` as bill_to_lname,`company` as bill_to_company,`address_1` as bill_to_address, `address_2` as bill_to_address2, `city` as bill_to_city,`virtuemart_state_id` as bill_to_states,(SELECT `state_name` FROM `#__virtuemart_states` WHERE `virtuemart_state_id` = bill_to_states) as bill_to_state ,`virtuemart_country_id` as bill_to_countrys, (SELECT `country_name` FROM #__virtuemart_countries WHERE `virtuemart_country_id` = bill_to_countrys) as bill_to_country,`zip` as bill_to_postal, `phone_1` as bill_to_phone,`email` as bill_to_email FROM `#__virtuemart_order_userinfos` WHERE address_type = 'BT' AND `virtuemart_order_id` = ".$db->quote($orderid);
+		$db->setQuery($sql);
+		$results = $db->loadAssoc();
+		
+		return $results;
+		
+	}
+	public function shipTO($orderid){
+		$db = JFactory::getDbo();
+		$sql = "SELECT `first_name` as ship_to_fname,`last_name` as ship_to_lname,`company` as ship_to_company,`address_1` as ship_to_address, `address_2` as ship_to_address2, `city` as ship_to_city, `virtuemart_state_id` as ship_to_states,(SELECT `state_name` FROM `#__virtuemart_states` WHERE `virtuemart_state_id` = ship_to_states) as ship_to_state, `virtuemart_country_id` as ship_to_countrys, (SELECT `country_name` FROM #__virtuemart_countries WHERE `virtuemart_country_id` = ship_to_countrys) as ship_to_country, `zip` as ship_to_postal, `phone_1` as ship_to_phone,`email` as ship_to_email FROM `#__virtuemart_order_userinfos` WHERE address_type = 'ST' AND `virtuemart_order_id` = ".$db->quote($orderid);
+		$db->setQuery($sql);
+		$results = $db->loadAssoc();
+		
+		if($results)
+			return $results;
+		else{
+			$sql = "SELECT `first_name` as ship_to_fname,`last_name` as ship_to_lname,`company` as ship_to_company,`address_1` as ship_to_address, `address_2` as ship_to_address2, `city` as ship_to_city, `virtuemart_state_id` as ship_to_states,(SELECT `state_name` FROM `#__virtuemart_states` WHERE `virtuemart_state_id` = ship_to_states) as ship_to_state, `virtuemart_country_id` as ship_to_countrys, (SELECT `country_name` FROM #__virtuemart_countries WHERE `virtuemart_country_id` = ship_to_countrys) as ship_to_country, `zip` as ship_to_postal, `phone_1` as ship_to_phone,`email` as ship_to_email FROM `#__virtuemart_order_userinfos` WHERE address_type = 'BT' AND `virtuemart_order_id` = ".$db->quote($orderid);
+			$db->setQuery($sql);
+			$results = $db->loadAssoc();
+			return $results;
+		}
+	}
+	
+	public function getOrder($orderid){
+		$db = JFactory::getDbo();
+		$sub = "concat((SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = order_currency),'  ',";
+		$sql = "SELECT virtuemart_order_id as order_id,`order_number`,`created_on` as order_date,$sub `order_subtotal`) as order_subtotal,`coupon_code` as coupon,$sub `order_discount`) as discount, (SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = order_status) as order_status,$sub `order_total`) as order_total,$sub order_billTaxAmount) as total_tax,(SELECT  `payment_element` FROM  `#__virtuemart_paymentmethods` = virtuemart_paymentmethod_id) as payment_method,(SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` WHERE `virtuemart_shipmentmethod_id` = virtuemart_shipmentmethod_id) as ship_method,order_pass as secret_key   FROM `#__virtuemart_orders` WHERE `virtuemart_order_id` = ".$db->quote($orderid);
+		$db->setQuery($sql);
+		$results = $db->loadAssoc();		
+		return $results;
+	}
+	
+	public function getProduct($orderid){
+		$db = JFactory::getDbo();
+		
+		$sql = "SELECT oritem.order_item_name as product_name,oritem.order_item_sku as sku,oritem.product_final_price as product_price,oritem.product_quantity as qty,  
+		( SELECT `product_in_stock` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = oritem.virtuemart_product_id ) as product_in_stock
+		FROM #__virtuemart_order_items as oritem WHERE oritem.virtuemart_order_id = ".$db->quote($orderid);
+		
+		$db->setQuery($sql);
+		$results = $db->loadAssocList();
+		return $results;
+	}
 }

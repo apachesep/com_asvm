@@ -1,36 +1,28 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @version     1.1
+ * @package     Advanced Search Manager for Virtuemart
+ * @copyright   Copyright (C) 2016 JoomDev. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      JoomDev <info@joomdev.com> - http://www.joomdev.com/
  */
-
 defined('JPATH_BASE') or die;
-
 use Joomla\Registry\Registry;
-
 $data = array();
-
 // Receive overridable options
 $data['options'] = !empty($data['options']) ? $data['options'] : array();
-
 if (is_array($data['options']))
 {
 	$data['options'] = new Registry($data['options']);
 }
-
 // Options
 $filterButton = $data['options']->get('filterButton', true);
 $searchButton = $data['options']->get('searchButton', true);
 $filterFields = $_REQUEST;
-
 $form = JForm::getInstance('form', JPATH_ROOT.'/administrator/components/com_asvm/models/forms/filter_orders.xml');
 JHtml::_('behavior.tooltip');
 $activetab = (isset($_REQUEST['active_tab']) && !empty($_REQUEST['active_tab'])) ? $_REQUEST['active_tab'] : "searchbyorder";
 ?>
-
  <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $activetab)); ?>
 	<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'searchbyorder', JText::_('COM_ASVM_ORDER_SEARCH_BY_ORDER', true)); ?>				
 		<!--Search by Order -->
@@ -191,7 +183,9 @@ $activetab = (isset($_REQUEST['active_tab']) && !empty($_REQUEST['active_tab']))
 	<input type="hidden" name="active_tab" id="active_tab" value="<?php echo $activetab; ?>" />
   <?php echo JHtml::_('bootstrap.endTab'); ?>
 <div class="clearfix"></div><div class="clearfix"></div>
-<br><button type="submit" class="btn btn-info" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+<br>
+<button  type="submit" class="btn btn-info" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><span class="icon-search"></span><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+<button id="toolbar-download" type="button" class="btn btn-warning" title="<?php echo JText::_('COM_ASVM_EXPORT_BUTTON'); ?>"><span class="icon-download"></span><?php echo JText::_('COM_ASVM_EXPORT_BUTTON'); ?></button>
 <hr>
 <script>
 	jQuery(function(){
@@ -200,7 +194,6 @@ $activetab = (isset($_REQUEST['active_tab']) && !empty($_REQUEST['active_tab']))
 			jQuery('#adminForm select').val('');
 			jQuery('#adminForm').submit();
 		});
-
 		jQuery('#myTabTabs li').live('click',function(){
 			var activeTab 	= jQuery(this).find('a').attr('href');	
 			var activeTabId = activeTab.replace("#", "");

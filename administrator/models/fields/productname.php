@@ -1,12 +1,11 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_banners
- *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @version     1.1
+ * @package     Advanced Search Manager for Virtuemart
+ * @copyright   Copyright (C) 2016 JoomDev. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      JoomDev <info@joomdev.com> - http://www.joomdev.com/
  */
-
 defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');

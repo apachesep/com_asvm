@@ -1,11 +1,10 @@
 <?php
-
 /**
- * @version     1.0.0
- * @package     com_asvm
- * @copyright   Copyright (C) 2015. All rights reserved.
+ * @version     1.1
+ * @package     Advanced Search Manager for Virtuemart
+ * @copyright   Copyright (C) 2016 JoomDev. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author       JoomDev <info@joomdev.com> - http://www.joomdev.com/
+ * @author      JoomDev <info@joomdev.com> - http://www.joomdev.com/
  */
 // No direct access
 defined('_JEXEC') or die;
