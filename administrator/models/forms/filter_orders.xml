@@ -74,6 +74,18 @@
 		</field>
 		
 		<field
+			name="shipment_method"
+			type="shipmentmethod"
+			multiple="true"
+			class="clr"
+			label="COM_ASVM_SHIPMENT_METHOD"			
+			description="COM_ASVM_SHIPMENT_METHOD"
+			
+			>
+			
+		</field>
+		
+		<field
 			name="email"
 			type="text"
 			class="clr"

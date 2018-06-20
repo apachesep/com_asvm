@@ -44,7 +44,8 @@ class AsvmModelOrders extends JModelList
 				'produt_name',
 				'order_status','a.order_status',
 				'payment_method',
-				'email','vou.email','vpeg.payment_name',
+				'shipment_method',
+				'email','vou.email','vpeg.payment_name','vpege.shipment_name',
 				'a.modified_on','a.created_on','a.order_total',
 				'first_name','vou.first_name','last_name','address',
 				'city','state','country','zip','from','to',
@@ -84,6 +85,12 @@ class AsvmModelOrders extends JModelList
 		
 		$query->select('vpeg.payment_name AS payment_method')
 			->join('LEFT', '#__virtuemart_paymentmethods_'.VmConfig::$vmlang.' AS vpeg ON vpeg.virtuemart_paymentmethod_id=a.virtuemart_paymentmethod_id');
+			
+			
+		// Join over the virtuemart shipmentmethods .
+		$query->select('vpege.shipment_name AS shipment_method')
+			->join('LEFT', '#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.' AS vpege ON vpege.virtuemart_shipmentmethod_id=a.virtuemart_shipmentmethod_id');
+			
 		
 		// Join over the virtuemart  order  userinfos.
 		$query->select("CONCAT(vou.first_name, ' ', vou.last_name) as name , vou.email")
@@ -134,6 +141,16 @@ class AsvmModelOrders extends JModelList
 			$query->where("a.virtuemart_paymentmethod_id IN($pM) ");
 		}
 		
+		
+		// Filter by  shipmentmethod 
+		$shipmentMethod1 = $this->getState('filter.shipment_method');
+		$shipmentMethod = array_filter((isset($shipmentMethod1) && !empty($shipmentMethod1)) ? $shipmentMethod1 : array());		
+		if (!empty($shipmentMethod))
+		{
+			$pM = implode(',',$shipmentMethod);
+			
+			$query->where("a.virtuemart_shipmentmethod_id IN($pM) ");
+		}
 		
 		// Filter by firstname
 		$firstName = $this->getState('filter.first_name');

@@ -141,6 +141,19 @@ echo $displayCurrency->currency_symbol;
 										}
 									break;
 									
+									case 'shipment_method' : 
+										$pmtid = implode(',',$v);
+										$db->setQuery("SELECT shipment_name FROM #__virtuemart_shipmentmethods_".VmConfig::$vmlang." WHERE virtuemart_shipmentmethod_id IN($pmtid)");
+										$resut = $db->loadObjectList();
+										$multiselectvalue = '';
+										if(!empty($resut)){
+											foreach($resut as $p=>$pv){
+												$multiselectvalue .= ($p <= 0) ? $pv->shipment_name : ', '.$pv->shipment_name;
+											}
+											
+										}
+									break;
+									
 									case 'country' : 
 										$cid = implode(',',$v);
 										$db->setQuery("SELECT country_name FROM #__virtuemart_countries WHERE virtuemart_country_id IN($cid)");
@@ -187,7 +200,7 @@ echo $displayCurrency->currency_symbol;
 						<th width="15%" >
 							<?php echo JHtml::_('grid.sort', 'COM_ASVM_FORM_ORDER_NUMBER', 'a.order_number', $listDirn, $listOrder); ?>
 						</th>
-						<th width="15%" class="nowrap center hidden-phone">
+						<th width="15%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'COM_ASVM_FORM_LBL_ORDER_NAME', 'vou.first_name', $listDirn, $listOrder); ?>
 						</th>
 						<th width="15%" class="nowrap hidden-phone">
@@ -196,6 +209,10 @@ echo $displayCurrency->currency_symbol;
 						<th width="10%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'COM_ASVM_PAYMENT_METHOD', 'vpeg.payment_name', $listDirn, $listOrder); ?>
 						</th>
+						<th width="10%" class="nowrap hidden-phone">
+							<?php echo JHtml::_('grid.sort', 'COM_ASVM_SHIPMENT_METHOD', 'vpege.shipment_name', $listDirn, $listOrder); ?>
+						</th>
+						
 						<th width="10%" class="nowrap center hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'COM_ASVM_ORDER_DATE', 'a.created_on', $listDirn, $listOrder); ?>
 						</th>
@@ -252,6 +269,10 @@ echo $displayCurrency->currency_symbol;
 							
 							<td class="small hidden-phone">
 								<?php echo $item->payment_method; ?>
+							</td>
+							
+							<td class="small hidden-phone">
+								<?php echo $item->shipment_method; ?>
 							</td>
 							
 							<td class="small hidden-phone">

@@ -177,7 +177,7 @@ class AsvmModelExports extends JModelList
 		//$sub = "concat((SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` =order_currency),' ',";
 		
 		$query = $db->getQuery(true);
-		$query->select('o.virtuemart_order_id as order_id,o.order_number,o.created_on as order_date,o.order_subtotal as order_subtotal,o.coupon_code as coupon,o.order_discount as discount,o.order_total,o.order_billTaxAmount as total_tax,o.order_pass as secret_key,s.order_status_name,pm.payment_element as payment_method,sm.shipment_element as ship_method,cc.currency_code_3 as currency_code_3,cs.currency_symbol as currency_symbol');
+		$query->select('o.virtuemart_order_id as order_id,o.order_number,o.created_on as order_date,o.order_subtotal as order_subtotal,o.coupon_code as coupon,o.order_discount as discount,o.order_total,o.order_billTaxAmount as total_tax,o.order_pass as secret_key,s.order_status_name,pm.payment_element as payment_method,sm.shipment_element as shipment_method,cc.currency_code_3 as currency_code_3,cs.currency_symbol as currency_symbol');
 		$query->from($db->quoteName('#__virtuemart_orders', 'o'));
 		$query->join('LEFT', $db->quoteName('#__virtuemart_orderstates', 's') . ' ON (' . $db->quoteName('o.order_status') . ' = ' . $db->quoteName('s.order_status_code') . ')');
 		$query->join('LEFT', $db->quoteName('#__virtuemart_paymentmethods', 'pm') . ' ON (' . $db->quoteName('o.virtuemart_paymentmethod_id') . ' = ' . $db->quoteName('pm.virtuemart_paymentmethod_id') . ')');

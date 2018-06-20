@@ -175,9 +175,15 @@ $countallitems = $this->data['countallitems'];
 				<td><?php echo JText::_("COM_ASVM_EXPORT_PAYMENT_METHOD");?></td>
 				<td></td>
 			</tr>
-			
 			<tr>
 				<td><span class="sortable-handler" style="cursor: move;"><span class="icon-menu"></span></span><span class="orderno">18</span></td>
+				<td><input class="checkbox" type="checkbox" name="export[]" checked="true"  value="shipment_method" date-toggle="shipment_method" ></td>
+				<td><?php echo JText::_("COM_ASVM_EXPORT_SHIPMENT_METHOD");?></td>
+				<td></td>
+			</tr>
+			
+			<tr>
+				<td><span class="sortable-handler" style="cursor: move;"><span class="icon-menu"></span></span><span class="orderno">19</span></td>
 				<td><input class="checkbox" type="checkbox" name="export[]" checked="true"  value="comment" date-toggle="comment" ></td>
 				<td><?php echo JText::_("COM_ASVM_EXPORT_COMMENT");?></td>
 				<td></td>

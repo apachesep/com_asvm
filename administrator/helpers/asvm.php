@@ -223,6 +223,38 @@ class AsvmHelper {
 
 		return $options;
 	}
+		// get Payment Method Options
+	public static function getShipmentMethodOptions()
+	{
+		$options = array();
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('a.virtuemart_shipmentmethod_id As value, b.shipment_name As text')
+			->from('#__virtuemart_shipmentmethods AS a')
+			->join('left', $db->quoteName('#__virtuemart_shipmentmethods_'.VmConfig::$vmlang, 'b') . ' ON (' . $db->quoteName('a.virtuemart_shipmentmethod_id') . ' = ' . $db->quoteName('b.virtuemart_shipmentmethod_id') . ')')
+			->where('a.published = 1')
+			->order('a.shipment_element');
+
+		// Get the options.
+		$db->setQuery($query);
+
+		try
+		{
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(500, $e->getMessage());
+		}
+
+		// Merge any additional options in the XML definition.
+		// $options = array_merge(parent::getOptions(), $options);
+
+		array_unshift($options, JHtml::_('select.option','0',JText::_('COM_ASVM_ORDER_SELECT_SHIPMENT_METHOD')));
+
+		return $options;
+	}
 
 
 }

@@ -85,6 +85,14 @@ $resultdata = $this->items;
 			   <?php echo $form->getInput('payment_method','filter',(isset($filterFields['filter']['payment_method']) ? $filterFields['filter']['payment_method'] : '')); ?>
 			  </div>
 			</div>
+			<div class="span3">
+			  <div class="input-group">
+				<span class="input-group-addon">
+				  <?php echo $form->getLabel('shipment_method','filter'); ?>
+				</span>
+			   <?php echo $form->getInput('shipment_method','filter',(isset($filterFields['filter']['shipment_method']) ? $filterFields['filter']['shipment_method'] : '')); ?>
+			  </div>
+			</div>
 		</div>
 		
    <?php echo JHtml::_('bootstrap.endTab'); ?>
